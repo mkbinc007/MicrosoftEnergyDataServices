@@ -129,4 +129,4 @@ During step #6 (pointing to the csv) of the [ingest CSV tutorial](https://learn.
 
 We will be using Managed Identity of the provisioned Synapse Workspace as an authentication mechanism into ADME. Please make sure that all of the above prerequisites are complete and you have all the required information captured for the rest of the tutorial. Please click on the link below.
 
-## [Using Synapse Managed Identity](/Guides/Synapse/DataLakeIntegration/merge-mi.md)
+## [Using Synapse & Dataflows for merge](/Guides/Synapse/DataLakeIntegration/merge-mi.md)
