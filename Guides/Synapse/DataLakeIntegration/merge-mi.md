@@ -67,12 +67,11 @@ az role assignment create --assignee $synapsemi --role 'Storage Blob Data Contri
 ### 3. Create Linked Services and Datasets
 We will create all the required linked services and the datasets needed for the pipeline
 
-> **_NOTE:_**  Please make a note that passing parameters at the time of creating the serices is not working as expected, please <REPLACE-WITH-YOUR-VALUES> in dataset and linkedservice json files for after you download the file and then run the follwoing commands without the --parameters argument
+> **_NOTE:_**  Please make a note that passing parameters at the time of creating the serices is not working as expected, please REPLACE-WITH-YOUR-VALUES where you see <> in dataset and linkedservice json files after you download the file and then run the following commands without the --parameters argument for now.
 
 1. Download the [linkedservice_datalake.json](src/linkedservice_datalake.json) to your local machine.
    1. Run the following command and refer to the downloaded file to create the linked service, replace the <STORAGE_ACCOUT_NAME> with your account name that you used to create during the pre-requisites
-   
-        ```Powershell
+    ```Powershell
     az synapse linked-service create `
         --name <linked-service-name> `
         --workspace-name <synapse-workspace> `
