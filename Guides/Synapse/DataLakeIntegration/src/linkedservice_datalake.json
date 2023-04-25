@@ -1,0 +1,26 @@
+{
+    "name": "linkedservice_datalake",
+    "type": "Microsoft.Synapse/workspaces/linkedservices",
+    "properties": {
+      "annotations": [],
+      "type": "AzureBlobFS",
+      "typeProperties": {
+        "url": "https://<storage-name>.dfs.core.windows.net/"
+      },
+      "parameters": {
+        "storageAccountName": {
+          "type": "string",
+          "defaultValue": "<storage-name>"
+        },
+        "SasUri": {
+          "type": "SecureString",
+          "defaultValue": ""
+        }
+      },
+      "connectVia": {
+        "referenceName": "AutoResolveIntegrationRuntime",
+        "type": "IntegrationRuntimeReference"
+      },
+      "authenticationType": "Sas"
+    }
+  }

@@ -1,0 +1,25 @@
+{
+    "name": "linked_service_adme_rest",
+    "properties": {
+        "parameters": {
+            "ADME_APPREG_APP_ID": {
+                "type": "String"
+            },
+            "ADME_HOST_NAME": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "RestService",
+        "typeProperties": {
+            "url": "https://<ADME_HOST_NAME>/api/search/v2/query",
+            "enableServerCertificateValidation": true,
+            "authenticationType": "ManagedServiceIdentity",
+            "aadResourceId": "<ADME_APPREG_APP_ID>"
+        },
+        "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+        }
+    }
+}

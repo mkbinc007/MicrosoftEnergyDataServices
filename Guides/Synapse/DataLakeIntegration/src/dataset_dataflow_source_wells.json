@@ -1,0 +1,66 @@
+{
+    "name": "dataset_dataflow_source_wells",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedservice_datalake",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "WELLS_SOURCE_FILENAME": {
+                "type": "String",
+                "defaultValue": "wells_mahesh.csv"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().WELLS_SOURCE_FILENAME",
+                    "type": "Expression"
+                },
+                "fileSystem": "produced"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": [
+            {
+                "name": "UWI",
+                "type": "String"
+            },
+            {
+                "name": "PERMIT_FEE",
+                "type": "String"
+            },
+            {
+                "name": "TRUE_VERTICAL_DEPTH",
+                "type": "String"
+            },
+            {
+                "name": "STATUS",
+                "type": "String"
+            },
+            {
+                "name": "PERMIT_NUMBER",
+                "type": "String"
+            },
+            {
+                "name": "COMPANY_NAME",
+                "type": "String"
+            },
+            {
+                "name": "SLANT",
+                "type": "String"
+            },
+            {
+                "name": "LEASED",
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

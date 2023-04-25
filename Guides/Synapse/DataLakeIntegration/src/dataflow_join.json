@@ -1,0 +1,104 @@
+{
+    "name": "dataflow_join",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "dataset_dataflow_source_json",
+                        "type": "DatasetReference"
+                    },
+                    "name": "source1Json",
+                    "description": "Import data from json"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "dataset_dataflow_source_wells",
+                        "type": "DatasetReference"
+                    },
+                    "name": "source2Csv"
+                }
+            ],
+            "sinks": [
+                {
+                    "dataset": {
+                        "referenceName": "dataset_sink_final_combined",
+                        "type": "DatasetReference"
+                    },
+                    "name": "sinkCombinedFinal"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "flattenSource1Json"
+                },
+                {
+                    "name": "joinWellsWellbore"
+                }
+            ],
+            "scriptLines": [
+                "source(output(",
+                "          aggregations as string,",
+                "          results as (acl as (owners as string[], viewers as string[]), authority as string, createTime as string, createUser as string, data as (BASIN as string, CLASS as string, COUNTRY as string, COUNTY as string, CRS as string, ELEVATION as double, ELEVATION_REF as string, EPSG_CODE as double, FIELD as string, FORMATION_AT_TD as string, INITIAL_COMPLETION_DATE as string, LATITUDE as double, LEASE as string, LONGITUDE as double, MD as double, OPERATOR as string, ORIGINAL_OPERATOR as string, PERMIT_DATE as string, PERMIT_NUMBER as string, SPUD_DATE as string, STATE as string, STATUS as string, STATUS_DATE as string, TVD as double, UNIT_SYSTEM as string, UWI as string, WB_NAME as string, WB_NUMBER as string, WELLBORE_SHAPE as string), id as string, kind as string, legal as (legaltags as string[], otherRelevantDataCountries as string[], status as string), modifyTime as string, modifyUser as string, namespace as string, source as string, tags as (dataflowId as string), type as string, version as long)[],",
+                "          totalCount as short",
+                "     ),",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false,",
+                "     documentForm: 'arrayOfDocuments') ~> source1Json",
+                "source(output(",
+                "          UWI as string,",
+                "          PERMIT_FEE as string,",
+                "          TRUE_VERTICAL_DEPTH as string,",
+                "          STATUS as string,",
+                "          PERMIT_NUMBER as string,",
+                "          COMPANY_NAME as string,",
+                "          SLANT as string,",
+                "          LEASED as string",
+                "     ),",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false) ~> source2Csv",
+                "source1Json foldDown(unroll(results),",
+                "     mapColumn(",
+                "          UWI = results.data.UWI,",
+                "          LATITUDE = results.data.LATITUDE,",
+                "          LONGITUDE = results.data.LONGITUDE,",
+                "          WB_SHAPE = results.data.WELLBORE_SHAPE,",
+                "          OPERATOR = results.data.OPERATOR,",
+                "          WB_NAME = results.data.WB_NAME",
+                "     ),",
+                "     skipDuplicateMapInputs: false,",
+                "     skipDuplicateMapOutputs: false) ~> flattenSource1Json",
+                "flattenSource1Json, source2Csv join(flattenSource1Json@UWI == source2Csv@UWI,",
+                "     joinType:'inner',",
+                "     matchType:'exact',",
+                "     ignoreSpaces: false,",
+                "     broadcast: 'auto')~> joinWellsWellbore",
+                "joinWellsWellbore sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     input(",
+                "          UWI as string,",
+                "          PERMIT_FEE as string,",
+                "          TRUE_VERTICAL_DEPTH as string,",
+                "          STATUS as string,",
+                "          PERMIT_NUMBER as string,",
+                "          COMPANY_NAME as string,",
+                "          SLANT as string,",
+                "          LEASED as string,",
+                "          LATTITUDE as string,",
+                "          LONGITUDE as string,",
+                "          WB_SHAPE as string,",
+                "          OPERATOR as string,",
+                "          WB_NAME as string",
+                "     ),",
+                "     umask: 0022,",
+                "     preCommands: [],",
+                "     postCommands: [],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> sinkCombinedFinal"
+            ]
+        }
+    }
+}

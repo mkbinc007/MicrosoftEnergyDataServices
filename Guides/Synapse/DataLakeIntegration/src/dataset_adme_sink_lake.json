@@ -1,0 +1,22 @@
+{
+    "name": "dataset_adme_sink_lake",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedservice_datalake",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "searchResultsFromADME.json",
+                "fileSystem": "produced"
+            },
+            "encodingName": "UTF-8 without BOM"
+        },
+        "schema": {},
+        "encodingName": "utf-8"
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

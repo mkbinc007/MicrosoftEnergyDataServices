@@ -1,0 +1,122 @@
+{
+    "name": "pipeline_adme_lake",
+    "properties": {
+        "description": "With Parameters",
+        "activities": [
+            {
+                "name": "copy_adme_lake",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "RestSource",
+                        "httpRequestTimeout": "00:01:40",
+                        "requestInterval": "00.00:00:00.010",
+                        "requestMethod": "POST",
+                        "requestBody": "{\"kind\": \"<SEARCH_QUERY>\"}",
+                        "additionalHeaders": {
+                            "data-partition-id": {
+                                "value": "@pipeline().parameters.DATA_PARTITION_ID",
+                                "type": "Expression"
+                            },
+                            "Content-Type": "application/json"
+                        },
+                        "paginationRules": {
+                            "supportRFC5988": "true"
+                        }
+                    },
+                    "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "JsonWriteSettings",
+                            "filePattern": "arrayOfObjects"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "dataset_adme_source_rest",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "dataset_adme_sink_lake",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "dataflow_adme_lake",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [
+                    {
+                        "activity": "copy_adme_lake",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "dataflow_join",
+                        "type": "DataFlowReference",
+                        "datasetParameters": {
+                            "sinkCombinedFinal": {
+                                "WELLS_WELLBORE_COMBINED_FILENAME": "wells_wellbore_combined_final.csv"
+                            }
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            }
+        ],
+        "parameters": {
+            "ADME_HOST_NAME": {
+                "type": "String",
+                "defaultValue": "<ADME_HOST_NAME>"
+            },
+            "SEARCH_QUERY": {
+                "type": "String",
+                "defaultValue": {
+                    "kind": "<SEARCH_QUERY>"
+                }
+            },
+            "DATA_PARTITION_ID": {
+                "type": "String",
+                "defaultValue": "<DATA_PARTITION_ID>"
+            },
+            "ADME_APPREG_APP_ID": {
+                "type": "string",
+                "defaultValue": "<ADME_APPREG_APP_ID>"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2023-04-17T18:02:05Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

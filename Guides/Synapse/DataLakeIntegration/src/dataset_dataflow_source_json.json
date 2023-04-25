@@ -1,0 +1,30 @@
+{
+    "name": "dataset_dataflow_source_json",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedservice_datalake",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "SEARCH_RESULTS_JSON_FILENAME": {
+                "type": "String",
+                "defaultValue": "searchResultsFromADME.json"
+            }
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().SEARCH_RESULTS_JSON_FILENAME",
+                    "type": "Expression"
+                },
+                "fileSystem": "produced"
+            }
+        },
+        "schema": {},
+        "encodingName": "utf-8"
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

@@ -1,0 +1,20 @@
+{
+    "name": "dataset_adme_source_rest",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linked_service_adme_rest",
+            "type": "LinkedServiceReference",
+            "parameters": {
+                "ADME_APPREG_APP_ID": "<ADME_APPREG_APP_ID>",
+                "ADME_HOST_NAME": "<ADME_HOST_NAME>"
+            }
+        },
+        "annotations": [],
+        "type": "RestResource",
+        "typeProperties": {
+            "relativeUrl": ""
+        },
+        "schema": []
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

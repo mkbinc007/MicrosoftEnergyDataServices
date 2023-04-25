@@ -1,0 +1,86 @@
+{
+    "name": "dataset_sink_final_combined",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "linkedservice_datalake",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "WELLS_WELLBORE_COMBINED_FILENAME": {
+                "type": "String",
+                "defaultValue": "wells_wellbore_combined_final.csv"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().WELLS_WELLBORE_COMBINED_FILENAME",
+                    "type": "Expression"
+                },
+                "fileSystem": "produced"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": [
+            {
+                "name": "UWI",
+                "type": "String"
+            },
+            {
+                "name": "PERMIT_FEE",
+                "type": "String"
+            },
+            {
+                "name": "TRUE_VERTICAL_DEPTH",
+                "type": "String"
+            },
+            {
+                "name": "STATUS",
+                "type": "String"
+            },
+            {
+                "name": "PERMIT_NUMBER",
+                "type": "String"
+            },
+            {
+                "name": "COMPANY_NAME",
+                "type": "String"
+            },
+            {
+                "name": "SLANT",
+                "type": "String"
+            },
+            {
+                "name": "LEASED",
+                "type": "String"
+            },
+            {
+                "name": "LATTITUDE",
+                "type": "String"
+            },
+            {
+                "name": "LONGITUDE",
+                "type": "String"
+            },
+            {
+                "name": "WB_SHAPE",
+                "type": "String"
+            },
+            {
+                "name": "OPERATOR",
+                "type": "String"
+            },
+            {
+                "name": "WB_NAME",
+                "type": "String"
+            }
+        ]
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}
